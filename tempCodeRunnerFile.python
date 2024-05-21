@@ -1,0 +1,23 @@
+class Contact:
+    all_contacts = []
+    def __init__(self, name, addr, email):        
+        self.name = name
+        self.addr = addr
+        self.email = email
+        Contact.all_contacts.append(self)
+
+import unittest
+# String -> Boolean 
+# Search a list by name
+
+def search (name): # stub
+    False
+
+class test(unittest.TestCase):
+    def test_search(self):
+        self.assertEqual(search('Noor'), True)
+        self.assertEqual(search('Sarah'), False)
+
+if __name__ == '__main__':
+    unittest.main()
+
