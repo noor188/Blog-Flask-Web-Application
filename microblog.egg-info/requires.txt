@@ -1,0 +1,6 @@
+Flask
+flask-wtf
+flask-migrate
+Flask-SQLAlchemy
+flask-login
+email-validator
