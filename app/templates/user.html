@@ -1,0 +1,23 @@
+{% extends "base.html"%}
+
+{% block content %}
+<h1>Profile</h1>
+<div>
+    <p>
+        User: {{ user.username }}
+    </p>
+    <p>
+        email: {{ user.email}}
+    </p>
+    <p>
+        {% if posts %}
+        {% for post in posts %}
+        <p>
+            {{ post.body.username}}
+            {{ post.body}}
+        </p>
+        {% endfor %}
+        {% endif %}
+    </p>
+</div>
+{% endblock %}

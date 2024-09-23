@@ -2,9 +2,10 @@ from app import app, db
 from flask import render_template, flash, redirect, url_for, request, abort
 from app.forms import LoginForm, RegisterForm
 from flask_login import login_user, logout_user, login_required, current_user
-from app.models import User
+from app.models import User, Post
 import sqlalchemy as sa
 from django.utils.http import url_has_allowed_host_and_scheme
+from urllib.parse import urlsplit
 
 @app.route('/')
 @app.route('/index')
@@ -69,5 +70,23 @@ def register():
         return redirect(url_for('login'))
     return render_template("register.html", title="Register", form=form)  
 
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    '''
 
+    Handles the user profile page
+
+    '''
+    statement_user  = sa.select(User).where(User.username == username)
+    user            = db.first_or_404(statement_user)
+    #statement_posts = sa.select(Post).where(Post.user_id == current_user.id )
+    #posts = db.session.scalars(statement_posts)
+    posts = [
+        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'Test post #2'},
+    ]
+    return render_template("user.html", user = user, posts = posts)
+
+    
 
