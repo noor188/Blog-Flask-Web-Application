@@ -2,20 +2,37 @@
 
 {% block content %}
 <h1>Profile</h1>
+{% if user == current_user %}
+<a href="{{ url_for('edit')}}">Edit</a>
+{% endif %}
 <div>
-    <p>
-        User: {{ user.username }}
-    </p>
-    <p>
-        email: {{ user.email}}
-    </p>
+    <table>
+        <tr valign="top">
+            <td>
+                <img src={{ user.avatar(80) }} alt="Profile image">
+            </td>
+            <td>
+                <h1>
+                    User: {{ user.username }}
+                </h1>
+                <p>
+                    email: {{ user.email}}
+                </p>
+                {% if user.about_me %}
+                <p>{{ user.about_me}}</p>
+                {% endif %}
+                {% if user.last_seen %}
+                Last seen on:
+                {{ user.last_seen}}                
+                {% endif %}
+            </td>            
+        </tr>        
+    </table>    
+    <hr>
     <p>
         {% if posts %}
         {% for post in posts %}
-        <p>
-            {{ post.body.username}}
-            {{ post.body}}
-        </p>
+            {% include '_post.html' %}       
         {% endfor %}
         {% endif %}
     </p>
