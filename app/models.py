@@ -5,7 +5,7 @@ import sqlalchemy.orm as so
 from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-
+import hashlib
 
 @login.user_loader
 def load_user(user_id):
@@ -19,6 +19,10 @@ class User(UserMixin, db.Model):
                                              unique=True)
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
+    about_me: so.Mapped[Optional[str]] = so.mapped_column(sa.String(500)) 
+
+    last_seen: so.Mapped[Optional[datetime]] = so.mapped_column(default=lambda: datetime.now(timezone.utc))
+    
     posts: so.WriteOnlyMapped['Post'] = so.relationship(
         back_populates='author')
     
@@ -27,6 +31,19 @@ class User(UserMixin, db.Model):
     
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def avatar(self, size: int) -> str:
+        '''
+        1. Trim any whitespace from the email
+        2. Hash the email using SHA-256 
+        3. Return a valid URL using the hashed email
+
+        Parameters: size (int) customized image size
+        Return    : Gravatar avatar request   (str) 
+        '''
+        trimmed_email = self.email.strip()
+        hash = hashlib.sha256(trimmed_email.encode()).hexdigest()
+        return  f"https://gravatar.com/avatar/{hash}?d=identicon&s=" + str(size)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
