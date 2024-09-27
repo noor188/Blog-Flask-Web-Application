@@ -94,13 +94,15 @@ def user(username):
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
-    form = EditForm()
-    if form.validate_on_submit():        
+    form = EditForm(current_user.username)
+    if form.validate_on_submit():  
+        
         current_user.username = form.username.data
-        current_user.about_me = form.about_me.data
+        current_user.about_me = form.about_me.data        
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('edit'))
+    
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
