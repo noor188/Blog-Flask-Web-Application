@@ -4,6 +4,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY    = os.environ.get('SECRET_KEY') or 'some key'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
+    
+    # =============================
+    # Email configuration variables
+    # =============================
     MAIL_SERVER   = os.environ.get('MAIL_SERVER')
     MAIL_PORT     = int(os.environ.get('MAIL_PORT') or 25)
     MAIL_USE_TLS  = os.environ.get('MAIL_USER_TLS') is not None
